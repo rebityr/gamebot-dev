@@ -70,11 +70,6 @@ async def start(message: Message):
     global users
     if message.from_id not in users:
         DB.new_user('users', message.from_id)
-        DB.set_cell('users', message.from_id, 'map', random.randint(1, 50))
-        referal = message.ref
-        if referal:
-            if len(DB.get_where_col('users', 'referal', referal)) <= 15 and int(referal) != message.from_id:
-                DB.set_cell('users', message.from_id, 'referal', referal)
         users = DB.get_all('users')
         await bot.state_dispenser.set(message.peer_id, States.START_STEP_1)
         await message.answer(msg_start_1, keyboard=keyboard_start(step=1))
